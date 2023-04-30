@@ -36,8 +36,8 @@ export class FacebookRecoverPuppeteer extends BasePuppeteer {
     );
     await this.timeout({ n: 8000 });
     await this.waitForSelector({ selector: 'input#identify_email' });
-    await this.type({ selector: 'input#identify_email', value: phone });
     const page = this._page;
+    await page.type('input#identify_email', String(phone), { delay: 50 });
     await page.$eval('button[type="submit"]', (el) => el.click());
     await this.waitForSelector({ selector: 'tbody tbody' });
     return this.formatResult(await page.$$eval('tbody', (els) => els.map((v) => v.innerText).join('')));
