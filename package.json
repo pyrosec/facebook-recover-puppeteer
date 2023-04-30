@@ -1,0 +1,27 @@
+{
+  "name": "facebook-recover-puppeteer",
+  "version": "0.1.0",
+  "description": "facebook recovery puppeteer",
+  "main": "lib/facebook.js",
+  "repository": "https://github.com/pyrosec/facebook-recover-puppeteer",
+  "author": "pyrosec",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
+  "bin": {
+    "facebook-recover": "./bin/facebook-recover.js"
+  },
+  "dependencies": {
+    "base-puppeteer": "https://github.com/pyrosec/base-puppeteer",
+    "lodash": "^4.17.21",
+    "puppeteer-extra-plugin-recaptcha": "^3.5.0",
+    "querystring": "^0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "nice-repl": "^0.1.2",
+    "typescript": "^5.0.4"
+  }
+}
