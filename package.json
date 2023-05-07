@@ -2,7 +2,7 @@
   "name": "facebook-recover-puppeteer",
   "version": "0.1.0",
   "description": "facebook recovery puppeteer",
-  "main": "lib/facebook.js",
+  "main": "lib/index.js",
   "repository": "https://github.com/pyrosec/facebook-recover-puppeteer",
   "author": "pyrosec",
   "license": "MIT",
