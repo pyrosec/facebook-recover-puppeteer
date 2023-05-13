@@ -27,6 +27,7 @@ export class FacebookRecoverPuppeteer extends BasePuppeteer {
     await this.goto({ url });
   }
   async lookupPhone({ phone }) {
+    await this.timeout({ n: 8000 });
     await this.openPage(
       url.format({
         protocol: "https:",
@@ -34,13 +35,16 @@ export class FacebookRecoverPuppeteer extends BasePuppeteer {
         pathname: "/login/identify",
       })
     );
-    await this.timeout({ n: 8000 });
+    await this.timeout({ n: 2000 });
     await this.waitForSelector({ selector: 'input#identify_email' });
     const page = this._page;
-    await page.type('input#identify_email', String(phone), { delay: 50 });
+    await page.type('input#identify_email', String(phone), { delay: 150 });
+    await this.timeout({ n: 2000 });
     await page.$eval('button[type="submit"]', (el) => el.click());
-    await this.waitForSelector({ selector: 'tbody tbody' });
-    return this.formatResult(await page.$$eval('tbody', (els) => els.map((v) => v.innerText).join('')));
+    await this.waitForSelector({ selector: 'tbody div:nth-child(2) div' });
+    return await page.evaluate(() => {
+      return [].slice.call(document.querySelectorAll('tbody div:nth-child(2) div')).filter((v) => v.classList.length === 0).map((v) => v.innerText);
+    });
   }
   async close() {
     try {
