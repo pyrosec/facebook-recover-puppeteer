@@ -31,16 +31,24 @@ export class FacebookRecoverPuppeteer extends BasePuppeteer {
     await this.openPage(
       url.format({
         protocol: "https:",
-        hostname: "www.facebook.com",
-        pathname: "/login/identify",
+        hostname: "www.facebook.com"
       })
     );
-    await this.timeout({ n: 2000 });
-    await this.waitForSelector({ selector: 'input#identify_email' });
+    await this.waitForSelector({ selector: 'a' });
+    await this.timeout({ n: 6000 });
     const page = this._page;
-    await page.type('input#identify_email', String(phone), { delay: 150 });
-    await this.timeout({ n: 2000 });
-    await page.$eval('button[type="submit"]', (el) => el.click());
+    await page.evaluate(() => {
+      [].slice.call(document.querySelectorAll('a')).find((v) => v.innerText.match('Forgot')).click();
+    });
+    await this.timeout({ n: 4000 });
+    await this.waitForSelector({ selector: 'input#identify_email' });
+    const chars = [].slice.call(phone);
+    for (const char of chars) {
+      await page.type('input#identify_email', char);
+      await this.timeout({ n: 100 + Math.floor(Math.random()*400) });
+    }
+    await this.timeout({ n: 6000 });
+    await page.click('button[type="submit"]');
     await this.waitForSelector({ selector: 'tbody div:nth-child(2) div' });
     return await page.evaluate(() => {
       return [].slice.call(document.querySelectorAll('tbody div:nth-child(2) div')).filter((v) => v.classList.length === 0).map((v) => v.innerText);
